@@ -1,17 +1,32 @@
 <template>
   <div>
-    <section v-for="(item , i) in items" :key="i">
-<p> {{item.title}} </p>
-<p> {{item.description}} </p>
-<img :src="item.image_url" alt="picture of items">
+    <section>
+      <input type="number" ref="item_filter" />
+      <button @click="price_filter">Price Filter</button>
+    </section>
+    <section v-for="(item, i) in items" :key="i">
+      <div v-if="item.price <= max_price">
+        <p>{{ item.title }}</p>
+        <p>{{ item.description }}</p>
+        <img :src="item.image_url" alt="picture of items" />
+        <p>${{ item.price }}</p>
+      </div>
     </section>
   </div>
 </template>
 
 <script>
 export default {
+  methods: {
+    price_filter: function () {
+      let user_input = this.$refs[`item_filter`];
+      let input_value = user_input[`value`];
+      this.max_price = input_value;
+    },
+  },
   data() {
     return {
+      max_price: 100,
       items: [
         {
           title: `egg`,
@@ -44,4 +59,8 @@ export default {
 </script>
 
 <style scoped>
+img {
+  width: 80px;
+  height: 80px;
+}
 </style>
